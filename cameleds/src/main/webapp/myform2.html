@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html >
+<head>
+
+	<link rel="stylesheet" href="dijit/themes/claro/claro.css">
+	<style type="text/css">
+html, body {
+   		width: 100%;
+   		height: 100%;
+   		margin: 0;
+   		overflow:hidden;
+}
+
+#borderContainer {
+    width: 100%;
+    height: 100%;
+}
+	</style>
+		
+</head>
+
+<body class="claro">
+
+    <div data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design:'sidebar', gutters:true, liveSplitters:true" id="borderContainer">
+    <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="splitter:true, region:'leading'" style="width: 100px;">Hi, I'm leading pane</div>
+    <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="splitter:true, region:'center'">
+    
+   <div id="formNode" data-dojo-type="dijit/form/Form">
+ 
+	<script type="dojo/on" data-dojo-event="submit" data-dojo-args="evt">
+		require([
+		  "dojo/dom", 
+		  "dojo/request",
+ 		  "dojo/json"		  
+		],
+		function(dom, request, JSON) {
+
+			// Stop the submit event processing
+
+ 	   		evt.stopPropagation();
+	   		evt.preventDefault();
+
+			// Send the input text to the server
+			var objectType = dom.byId('objectType');
+			var inputText = dom.byId('textarea2');
+			var postUrl = "/mycamel/type/" + objectType.value;
+			
+			// Post the data to the server
+			request.post(postUrl, {
+					// Send the value of the input text
+					data: inputText.value,
+					handleAs: "json",
+					// Wait 2 seconds for a response
+					timeout: 2000
+
+				}).then(function(response){
+					
+		            // Display the data sent from the server
+/* 		            var html = "<h2>JSON Data</h2>" +
+		                "<p>JSON encoded data:</p>" +
+		                "<p><code>" + JSON.stringify(data) + "</code></p>"+
+		                "<h3>Accessing the JSON data</h3>" +
+		                "<p><strong>title</strong> " + data.title + "</p>" +
+		                "<p><strong>items</strong> An array of items." +
+		                "Each item has a name and a value.  The type of " +
+		                "the value is shown in parentheses.</p><dl>";
+		 
+		            arrayUtil.forEach(data.items, function(item,i){
+		                html += "<dt>" + item.name +
+		                    "</dt><dd>" + item.value +
+		                    " (" + (typeof item.value) + ")</dd>";
+		            });
+		            html += "</dl>";
+ */ 
+					var stringy = JSON.stringify(response, null, ' ')
+					dom.byId('resultDiv').innerHTML = stringy;
+				});
+			});
+   	</script>
+
+		<div>
+			Object Type: <input type="text" required="true" name="objectType" id="objectType" placeholder="Object Type" value="Document"
+						data-dojo-type="dijit/form/ValidationTextBox" missingMessage="Ooops!  You forgot your object type!" />
+		</div>
+					
+	<pre id="resultDiv">
+	</pre>
+    
+						
+		<textarea id="textarea2" name="textarea2" data-dojo-type="dijit/form/SimpleTextarea" rows="20" cols="50" style="width:auto;">
+{
+   "repositoryId":"target_object_store_name",
+   "objectId"   : "GUID_or_PID_of_item_that_is_being_edited",
+   "requestMode" : "initialExistingObject",
+   "externalDataIdentifier" : "identifier_for_the_service",
+
+   "properties":
+   [
+   {
+      "symbolicName" : "property_name1",
+      "value"        : "current_value1"
+   },
+   {
+      "symbolicName" : "property_name2",
+      "value"        : "current_value2"
+   }
+   ],
+
+   "clientContext":
+   {
+      "Key1":"Value1",
+      "Key2":"Value2"
+   }
+}		</textarea>				
+		<br><button type="submit" value="Submit Form" id="submitButton" data-dojo-type="dijit/form/Button" >Submit Form</button>
+	</div>
+	
+ 	</div>
+  	</div>
+	
+    <script src="dojo/dojo.js" data-dojo-config="async: true, parseOnLoad: true"></script>
+
+	<script>
+		require([
+		  "dojo/parser",
+		  "dijit/layout/ContentPane", 
+		  "dijit/layout/BorderContainer", 
+		  "dijit/form/Form",
+		  "dijit/form/Button",
+		  "dijit/form/ValidationTextBox",
+		  "dijit/form/SimpleTextarea",
+		  "dojo/domReady!"		    
+		]);
+	</script>
+
+</body>
+</html>

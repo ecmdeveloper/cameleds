@@ -1,0 +1,28 @@
+{
+   "repositoryId":"target_object_store_name",
+   "objectId"   : "GUID_or_PID_of_item_that_is_being_edited",
+   "requestMode" : "initialExistingObject",
+   "externalDataIdentifier" : "identifier_for_the_service",
+
+   "properties":
+   [
+   {
+      "symbolicName" : "property_name1",
+      "value"        : "current_value1"
+   },
+   {
+      "symbolicName" : "property_name2",
+      "value"        : "current_value2"
+   },
+   {
+      "symbolicName" : "int_property",
+      "value"        : 1999
+   }
+   ],
+
+   "clientContext":
+   {
+      "Key1":"Value1",
+      "Key2":"Value2"
+   }
+}
