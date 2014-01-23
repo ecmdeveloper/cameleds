@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configures the Camel Context-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<bean id="operations" class="com.ecmdeveloper.eds.operations.PropertyOperations"/>
+	<bean id="enrichHeadersAggregation" class="com.ecmdeveloper.eds.operations.EnrichHeadersAggregation"/>
+	
+  <camel:camelContext xmlns="http://camel.apache.org/schema/spring">
+  
+   	<route id="mainroute">
+   		<from uri="direct:start"/>
+        <setBody>
+        	<simple>resource:classpath:/postcode_request.json</simple>
+        </setBody>
+        <to uri="eds:start"/>
+        <setHeader headerName="postcode">
+        	<simple>${body.property[postcode].value}</simple>
+        </setHeader>
+        <enrich uri="direct:postcode" strategyRef="enrichHeadersAggregation"/>
+		<to uri="bean:operations?method=setValue(${body.property[street]},${header[street]})"/>
+		<to uri="bean:operations?method=setValue(${body.property[town]},${header[town]})"/>	
+		<to uri="bean:operations?method=setValue(${body.property[province]},${header[province]})"/>	
+        <to uri="eds:end"/>
+  	</route>
+
+	<route id="restservice">
+		<from uri="direct:postcode" />
+		<setHeader headerName="Api-Key">
+			<constant>ef40493a981f3dc1353930bf103ceca39accdca5</constant>
+		</setHeader>
+		<setHeader headerName="Exchange.HTTP_URI">
+			<simple>http://api.postcodeapi.nu/${header.postcode}</simple>
+		</setHeader>
+		<setBody>
+			<constant>not used</constant>
+		</setBody>
+		<to uri="http4://api.postcodeapi.nu" />
+		<unmarshal>
+			<json library="Jackson"/>
+		</unmarshal>
+		<setHeader headerName="street">
+			<simple>${body[resource][street]}</simple>
+		</setHeader>
+		<setHeader headerName="town">
+			<simple>${body[resource][town]}</simple>
+		</setHeader>
+		<setHeader headerName="province">
+			<simple>${body[resource][province]}</simple>
+		</setHeader>
+		<setHeader headerName="latitude">
+			<simple>${body[resource][latitude]}</simple>
+		</setHeader>
+		<setHeader headerName="longitude">
+			<simple>${body[resource][longitude]}</simple>
+		</setHeader>
+
+	</route>
+  	
+  </camel:camelContext>
+
+</beans>
