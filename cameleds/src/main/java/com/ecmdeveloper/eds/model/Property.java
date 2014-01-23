@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_NULL)
-public class Property {
+public class Property implements ChoiceListContainer {
 	
    	private String symbolicName;
 	private Object value;
@@ -29,10 +29,18 @@ public class Property {
 		return getSymbolicName();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.ecmdeveloper.eds.model.ChoiceListContainer#getChoiceList()
+	 */
+	@Override
 	public ChoiceList getChoiceList() {
 		return this.choiceList;
 	}
  	
+	/* (non-Javadoc)
+	 * @see com.ecmdeveloper.eds.model.ChoiceListContainer#setChoiceList(com.ecmdeveloper.eds.model.ChoiceList)
+	 */
+	@Override
 	public void setChoiceList(ChoiceList choiceList) {
 		this.choiceList = choiceList;
 	}

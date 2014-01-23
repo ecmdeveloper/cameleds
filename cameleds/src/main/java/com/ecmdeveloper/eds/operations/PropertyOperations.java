@@ -28,4 +28,8 @@ public class PropertyOperations {
 	public void readwrite(Property property) {
 		property.setDisplayMode(DisplayMode.readwrite);
 	}
+	
+	public void setValue(Property property, Object value) {
+		property.setValue(value);
+	}
 }

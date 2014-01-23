@@ -5,8 +5,7 @@ import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.impl.JndiRegistry;
 import org.junit.Test;
 
-import com.ecmdeveloper.eds.beans.LogRequest;
-import com.ecmdeveloper.eds.core.PropertyRule;
+import com.ecmdeveloper.eds.model.PropertyRule;
 import com.ecmdeveloper.eds.model.constants.RequestMode;
 import com.ecmdeveloper.eds.operations.PropertyOperations;
 import com.ecmdeveloper.eds.operations.PropertySplitter;
@@ -39,7 +38,7 @@ public class PropertySplitterTest extends ExternalDataServiceTestSupport {
 	                	.setBody( simple("resource:classpath:/edsrequest.json") )
 	                	.setHeader("Hello", simple("World!") )
 	                	.to("eds:start")
-	                	.split().method(PropertySplitter.class)
+	                	.split().simple("${body.properties}") //method(PropertySplitter.class)
 	                	.aggregationStrategy( new ProperySplitterAggregation() )
 	                	.log("Split: ${body.symbolicName}") 	
 	                	.log("${header.request.requestMode}")

@@ -1,19 +1,19 @@
 /**
  * 
  */
-package com.ecmdeveloper.eds.core;
+package com.ecmdeveloper.eds.model;
 
-import com.ecmdeveloper.eds.model.Property;
 
 /**
  * @author ricardobelfor
  *
  */
-public class PropertyRule {
+public class PropertyRule implements ChoiceListContainer{
 
 	private Boolean hidden;
 	private Boolean required;
 	private String label;
+	private ChoiceList choiceList;
 	
 	public Boolean getHidden() {
 		return hidden;
@@ -51,5 +51,15 @@ public class PropertyRule {
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	@Override
+	public ChoiceList getChoiceList() {
+		return choiceList;
+	}
+
+	@Override
+	public void setChoiceList(ChoiceList choiceList) {
+		this.choiceList = choiceList;
 	}
 }
