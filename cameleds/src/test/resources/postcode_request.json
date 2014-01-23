@@ -1,0 +1,32 @@
+{
+   "repositoryId":"target_object_store_name",
+   "objectId"   : "GUID_or_PID_of_item_that_is_being_edited",
+   "requestMode" : "initialExistingObject",
+   "externalDataIdentifier" : "identifier_for_the_service",
+
+   "properties":
+   [
+   {
+      "symbolicName" : "postcode",
+      "value"        : "1313JC"
+   },
+   {
+      "symbolicName" : "street",
+      "value"        : null
+   },
+   {
+      "symbolicName" : "town",
+      "value"        : null
+   },
+   {
+      "symbolicName" : "province",
+      "value"        : null
+   }
+   ],
+
+   "clientContext":
+   {
+      "Key1":"Value1",
+      "Key2":"Value2"
+   }
+}
